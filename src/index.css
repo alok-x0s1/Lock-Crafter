@@ -10,7 +10,7 @@
 	}
 
 	body {
-		@apply bg-[#C4BCB2] text-[#1C1C19];
+		@apply bg-background text-primary dark:bg-primary dark:text-background;
 	}
 }
 

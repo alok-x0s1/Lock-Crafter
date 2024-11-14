@@ -4,12 +4,15 @@ import Character from "./components/Character";
 import Footer from "./components/Footer";
 import Heading from "./components/Heading";
 import PasswordStrength from "./components/PasswordStrength";
+import DarkMode from "./components/DarkMode";
 
 function App() {
 	const [length, setLength] = useState(10);
 	const [numberAllowed, setNumberAllowed] = useState(false);
 	const [charAllowed, setCharAllowed] = useState(false);
 	const [password, setPassword] = useState("");
+	const [btnText, setBtnText] = useState("Copy");
+
 	const passwordref = useRef(null);
 
 	const passwordGenerator = useCallback(() => {
@@ -29,11 +32,10 @@ function App() {
 	}, [numberAllowed, charAllowed, length, setPassword]);
 
 	const copyPasswordToClipboard = useCallback(() => {
-		let text = document.querySelector(".copyBtn");
-		text.innerText = "Copied!";
+		setBtnText("Copied");
 		setTimeout(() => {
-			text.innerText = "Copy";
-		}, 5000);
+			setBtnText("Copy");
+		}, 4000);
 		passwordref.current?.select();
 		window.navigator.clipboard.writeText(password);
 	}, [password]);
@@ -43,14 +45,15 @@ function App() {
 	}, [length, numberAllowed, charAllowed, passwordGenerator]);
 
 	return (
-		<div className="max-w-2xl mx-auto relative h-screen">
+		<div className="max-w-2xl mx-auto h-screen">
+			<DarkMode />
 			<Heading />
 
 			<div className="flex mb-4 justify-between gap-4 w-full">
 				<input
 					readOnly
 					value={password}
-					className="outline-none w-full h-12 text-xl py-1 px-3 font-semibold tracking-wider border-primary border-2 bg-gray-300 rounded-sm selection:bg-secondary selection:text-white"
+					className="outline-none w-full h-12 text-xl py-1 px-3 font-semibold tracking-wider border-primary border-2 bg-gray-300 dark:bg-primary dark:text-background dark:border-background rounded-sm selection:bg-secondary selection:text-white cursor-not-allowed"
 					type="text"
 					ref={passwordref}
 				/>
@@ -58,7 +61,7 @@ function App() {
 					onClick={copyPasswordToClipboard}
 					className="copyBtn w-28 mb-2"
 				>
-					Copy
+					{btnText}
 				</button>
 			</div>
 
